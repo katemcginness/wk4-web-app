@@ -9,27 +9,24 @@ if (isset($_GET['id'])) {
         require "common.php";
         
         // run when submit button is clicked
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['save'])) {
             try {
                 $connection = new PDO($dsn, $username, $password, $options);  
                 
                 //grab elements from form and set as varaible
-                $work =[
+                $income =[
                     "id"         => $_POST['id'],
-                    "artistname" => $_POST['artistname'],
-                    "worktitle"  => $_POST['worktitle'],
-                    "workdate"   => $_POST['workdate'],
-                    "worktype"   => $_POST['worktype'],
-                    "date"   => $_POST['date'],
+                    "incomename" => $_POST['incomename'],
+                    "incomeamount"  => $_POST['incomeamount'],
+                    "incomefrequency"   => $_POST['incomefrequency'],
                 ];
             
                 // create SQL statement
-                $sql = "UPDATE `works` 
+                $sql = "UPDATE `income` 
                         SET id = :id, 
-                            artistname = :artistname, 
-                            worktitle = :worktitle, 
-                            workdate = :workdate, 
-                            worktype = :worktype, 
+                            incomename = :incomename, 
+                            incomeamount = :incomeamount, 
+                            incomefrequency = :incomefrequency, 
                             date = :date 
                         WHERE id = :id";
             
@@ -37,7 +34,7 @@ if (isset($_GET['id'])) {
                 $statement = $connection->prepare($sql);
             
                 //execute sql statement
-                $statement->execute($work);
+                $statement->execute($income);
   
                 
                 } catch(PDOException $error) {
@@ -52,7 +49,7 @@ if (isset($_GET['id'])) {
         $id = $_GET['id'];
 
         //select statement to get the right data
-        $sql = "SELECT * FROM works WHERE id = :id";
+        $sql = "SELECT * FROM income WHERE id = :id";
 
         // prepare the connection
         $statement = $connection->prepare($sql);
@@ -73,38 +70,32 @@ if (isset($_GET['id'])) {
     // echo $_GET['id'];
 
     ?>
-    
-    <form method="post">
-
-    <label for="id">ID</label>
-    <input type="text" name="id" id="id" value="<?php echo escape($work['id']); ?>" >
-    
-    
-    <label for="artistname">Artist Name</label>
-    <input type="text" name="artistname" id="artistname" value="<?php echo escape($work['artistname']); ?>">
-
-    <label for="worktitle">Work Title</label>
-    <input type="text" name="worktitle" id="worktitle" value="<?php echo escape($work['worktitle']); ?>">
-
-    <label for="workdate">Work Date</label>
-    <input type="text" name="workdate" id="workdate" value="<?php echo escape($work['workdate']); ?>">
-
-    <label for="worktype">Work Type</label>
-    <input type="text" name="worktype" id="worktype" value="<?php echo escape($work['worktype']); ?>">
-    
-    <label for="date">Work Date</label>
-    <input type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
-
-    <input type="submit" name="submit" value="Save">
-
-    </form>
-
 
 <?php
-
 } else {
     // no id, show error
     echo "No id - something went wrong";
     //exit;
 }
 ?>
+
+<form method="post">
+
+<label for="id">ID</label>
+<input type="text" name="id" id="id" value="<?php echo escape($income['id']); ?>" >
+
+
+<label for="incomename">Income name</label>
+<input type="text" name="incomename" id="incomename" value="<?php echo escape($income['incomename']); ?>">
+
+<label for="incomeamount">Income amount</label>
+<input type="text" name="incomeamount" id="incomeamount" value="<?php echo escape($income['incomeamount']); ?>">
+
+<label for="incomefrequency">Income frequency</label>
+<input type="text" name="incomefrequency" id="incomefrequency" value="<?php echo escape($income['incomefrequency']); ?>">
+
+
+<input type="submit" name="save" value="Save">
+
+</form>
+
